@@ -2,8 +2,8 @@ import cv2, time
 import supervision as sv
 from ultralytics import YOLO
 
-FRAME_WIDTH = 640
-FRAME_HEIGHT = 480
+CAPTURE_FRAME_WIDTH = 640
+CAPTURE_FRAME_HEIGHT = 480
 
 def main():
     
@@ -11,11 +11,11 @@ def main():
     writer= cv2.VideoWriter('webcam_yolo.mp4', 
                             cv2.VideoWriter_fourcc(*'DIVX'), 
                             7, 
-                            (FRAME_WIDTH, FRAME_HEIGHT))
+                            (CAPTURE_FRAME_WIDTH, CAPTURE_FRAME_HEIGHT))
     
     cap = cv2.VideoCapture(0)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, FRAME_WIDTH)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, CAPTURE_FRAME_WIDTH)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, CAPTURE_FRAME_HEIGHT)
 
     model = YOLO("yolov8s.pt")
 
