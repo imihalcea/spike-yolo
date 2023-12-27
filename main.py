@@ -38,7 +38,7 @@ def main():
         ]
         frame = label_annotator.annotate(frame, detections, labels) 
         
-        #writer.write(frame)
+        writer.write(frame)
         
         new_frame_time = time.time() 
         fps = 1/(new_frame_time-prev_frame_time) 
