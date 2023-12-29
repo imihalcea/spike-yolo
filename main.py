@@ -2,12 +2,11 @@ import cv2, time
 import supervision as sv
 from ultralytics import YOLO
 
-CAPTURE_FRAME_WIDTH = 640
-CAPTURE_FRAME_HEIGHT = 480
+CAPTURE_FRAME_WIDTH = 800
+CAPTURE_FRAME_HEIGHT = 600
 
 def main():
     
-    # to save the video
     writer= cv2.VideoWriter('webcam_yolo.mp4', 
                             cv2.VideoWriter_fourcc(*'DIVX'), 
                             7, 
@@ -17,7 +16,7 @@ def main():
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, CAPTURE_FRAME_WIDTH)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, CAPTURE_FRAME_HEIGHT)
 
-    model = YOLO("yolov8s.pt")
+    model = YOLO("yolov8n.pt")
 
     box_annotator = sv.BoxAnnotator()
     label_annotator = sv.LabelAnnotator(text_position=sv.Position.TOP_LEFT)
@@ -28,7 +27,7 @@ def main():
     
     while True:
         ret, frame = cap.read()
-        result = model.predict(frame, agnostic_nms=True, conf=0.6)[0]
+        result = model.predict(frame, agnostic_nms=True, conf=0.4, verbose=False)[0]
         detections = sv.Detections.from_ultralytics(result)
         frame = box_annotator.annotate(frame, detections)
         labels = [
@@ -38,7 +37,6 @@ def main():
         ]
         frame = label_annotator.annotate(frame, detections, labels) 
         
-        writer.write(frame)
         
         new_frame_time = time.time() 
         fps = 1/(new_frame_time-prev_frame_time) 

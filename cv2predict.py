@@ -76,6 +76,7 @@ def inference_pipeline(image:np.ndarray, model:cv2.dnn.Net, score_threshold:floa
     return detections if detections is None else detections.with_nms(nms_threshold, class_agnostic)    
 
 def main():
+    
     writer= cv2.VideoWriter('webcam_yolo_onnx.mp4', 
                             cv2.VideoWriter_fourcc(*'mp4v'), 
                             20.0, 
@@ -86,6 +87,8 @@ def main():
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, CAPTURE_FRAME_HEIGHT)
 
     model: cv2.dnn.Net = cv2.dnn.readNetFromONNX(ONNX_MODEL)
+    model.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
+    model.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
     
     box_annotator = sv.BoxAnnotator()
     label_annotator = sv.LabelAnnotator(text_position=sv.Position.TOP_LEFT)
@@ -128,3 +131,4 @@ def display_frame(frame):
 
 if __name__ == "__main__":
     main()
+    
