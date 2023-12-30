@@ -1,4 +1,12 @@
 from ultralytics import YOLO
+from settings import Settings
+import yolo_classes as classes
 
-model = YOLO('yolov8n.pt')
-model.export(format="onnx", imgsz=128, int8=True)
+settings = Settings.load_from_env(classes.ALL)
+if settings.optimizations is not None:
+    model = YOLO(settings.model)
+    optimizations = settings.optimizations
+    model.export(
+        format="onnx", 
+        imgsz=optimizations.imgsz, 
+        int8=optimizations.int8)
